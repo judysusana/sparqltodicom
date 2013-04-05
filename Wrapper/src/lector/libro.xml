@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<libro>
-	<persona>
-		<nombre>Kiran</nombre>
-  		<apellido>Pai</apellido>
-  		<edad>22</edad>
-	</persona>
-	<persona>
-		<nombre>Juliet</nombre>
-  		<apellido>Mai</apellido>
-  		<edad>19</edad>
-	</persona>
-	<persona>
-		<nombre>Gio</nombre>
-  		<apellido>Bill</apellido>
-  		<edad>23</edad>
-	</persona>
-</libro>
+<consulta>
+	<select>
+		<variable>
+		<etiqueta>?patientName
+		</etiqueta> </variable>
+		
+		<variable>
+		<etiqueta>?patientId
+		</etiqueta> </variable>
+		
+		<variable>
+		<etiqueta>?tag
+		</etiqueta> </variable>
+		
+	</select>
+		
+	<where>
+		<patron><tripla>?Patient, patientName, ?patientName	</tripla></patron>		
+  		<patron><tripla>?Patient, patientRelatedStudy, ?Study</tripla></patron>
+  		<patron><tripla>?Study, studyRelatedSerie, ?Serie</tripla></patron>
+		<patron><tripla>?Serie, serieRelatedInstance, ?Image</tripla></patron>
+		<patron><tripla>?Image, hasTag, ?Tag</tripla></patron>
+		<patron><tripla>?Tag, tagLabel, ?Label</tripla></patron>
+		
+	</where>
+	
+
+
+<filter>
+		<filtrovariable> <filtro>?Label</filtro>
+  		<valorfiltro>cefalia</valorfiltro> </filtrovariable>
+  		
+	</filter>
+	
