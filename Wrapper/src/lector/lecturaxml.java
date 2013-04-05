@@ -1,6 +1,7 @@
 package lector;
 
 import java.io.File;
+import java.util.ArrayList;
 //import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,12 +11,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-//import viewer;
+import viewer.*;
+
+import viewer.Patient;
 
 public class lecturaxml {
 	
 	
-	public void  leer(){
+public void  leer(){
 		
 		
 		try {
@@ -24,7 +27,7 @@ public class lecturaxml {
 			  Document doc = dBuilder.parse(new File("E:/libro.xml"));
 			  doc.getDocumentElement().normalize();
 
-			  System.out.println("El elemento raíz es: " + doc.getDocumentElement().getNodeName());
+			  System.out.println("El elemento raÃ­z es: " + doc.getDocumentElement().getNodeName());
 			    
 			  NodeList listaAtributos = doc.getElementsByTagName("select");
 
@@ -34,18 +37,24 @@ public class lecturaxml {
 			      
 			    System.out.println("select="+select.getNodeName());
 			   
-			    if (select.getNodeType() == Node.ELEMENT_NODE) {  // tenga atributos quiere decir que por definicón es un Node (nodo)
+			    if (select.getNodeType() == Node.ELEMENT_NODE) {  // tenga atributos quiere decir que por definicÃ³n es un Node (nodo)
 
 		            Element elemento = (Element) select;   
 		            //System.out.println("hijoselect : " + getTagValue("variable", elemento));
 		            
 		            NodeList listavariable =elemento.getElementsByTagName("variable");
+		            String arreglo[]= new String[listavariable.getLength()]; //guardo en un arreglo tipo string
 		            for (int j=0; j<listavariable.getLength(); j++){
 		            	Node variable =listavariable.item(j);
 		            	
 		            	if (variable.getNodeType()==Node.ELEMENT_NODE){
 		            	Element var =(Element) variable;
-		            	System.out.println("variable"+getTagValue("etiqueta", var));
+		            	//System.out.println("variable"+getTagValue("etiqueta", var));
+		            	arreglo[j]= getTagValue("etiqueta", var) ;
+		                
+		                System.out.println("variable==="+arreglo[j]);
+		            	
+		            	
 		            	}
 		            	
 		            }
@@ -71,7 +80,7 @@ public class lecturaxml {
 		                  	
 		                  	if (variables.getNodeType()==Node.ELEMENT_NODE){
 		                  	Element vari =(Element) variables;
-		                  	System.out.println("variable"+getTagValue("tripla", vari));
+		                  	System.out.println("variable=="+getTagValue("tripla", vari));
 		                  	}
 		                  	
 		                  }
@@ -112,40 +121,46 @@ public class lecturaxml {
 		  }
 	}
 	
-	/*public static void CreatePACSAcces()
-	XDocument xdoc1 = XDocument.Load("E:/libro.xml");
+public void CreatePACSAcces(){
+	//XDocument xdoc1 = XDocument.Load("E:/libro.xml");
 	PACSAcces consulta = new PACSAcces(); 
-	Arraylist<PACSAcces> listapacs
-	   = (from patients in xdoc1.Element("select").Elements("variable")
-	      select new patien
-	      {
-	          variables = select.Element("variable").Value, //recorrer un array
-	          
-	          objMarkList = (from _marks in _student.Element("marks").Elements("mark")
-	                         select new Mark
-	                         {
-	                             Term  = _marks.Element("term").Value,
-	                             Science  = _marks.Element("science").Value,
-	                             Mathematics  = _marks.Element("mathematics").Value,
-	                             Language  = _marks.Element("language").Value,
-	                             Result = _marks.Element("result").Value,
-	                             objComment = (from _cmt in _marks.Elements("comments")
-	                                           select new Comment
-	                                           {
-	                                               TeacherComment = _cmt.Element("teacher").Value,
-	                                               ParentComment = _cmt.Element("parent").Value
-	                                           }).FirstOrDefault(),
-	                         }).ToList()
-	      }).ToList();
-	foreach (var _stud in lstStudent)
-	{
-	  // Your code
-	}*/
+	ArrayList<Patient> patients; 
+	String id="";
+	String argumentospaciente="";
+	
+	patients=consulta.getPatients();
+	
+	
+	                                             
+		for (int p=0; p<patients.size();p++){
+			patients.get(p).getName();
+			id=patients.get(p).getId();
+			//System.out.println("id=="+id);
+			consulta.getStudies(id);
+			System.out.println("Study's ToString:  "+consulta.getStudies(id).get(p).getId().toString());
+			//System.out.println("Patient's name:  "+patients.get(p).getName().toString());
+			
+			}
+		
+	}
+
+
+
+
+
 
  public static void main(String argv[]) {
 
   lecturaxml lectura=new lecturaxml();
   lectura.leer();
+  
+  lectura.CreatePACSAcces();
+                                           
+		
+  //PACSAcces consulta = new PACSAcces(); 
+	//consulta.getPatients();
+  //consulta.getStudies("7rAgWJ");    
+  //System.out.println("imprimase");
 
  }
 
